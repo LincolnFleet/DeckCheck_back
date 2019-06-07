@@ -16,6 +16,26 @@ ActiveRecord::Schema.define(version: 2019_06_06_220245) do
   enable_extension "plpgsql"
 
   create_table "cards", force: :cascade do |t|
+    t.string "api_id"
+    t.string "name"
+    t.integer "quantity"
+    t.string "colors"
+    t.string "colorIdentity"
+    t.string "type"
+    t.string "supertypes"
+    t.string "types"
+    t.string "subtypes"
+    t.string "manaCost"
+    t.integer "cmc"
+    t.string "rarity"
+    t.string "set"
+    t.string "loyalty"
+    t.integer "power"
+    t.integer "toughness"
+    t.text "text"
+    t.string "imageUrl"
+    t.text "flavor"
+    t.string "gameFormat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
