@@ -1,4 +1,6 @@
-class Api::V1::DecksController < ApplicationController
+class DecksController < ApplicationController
+  before_action :authorize!, only: [:create, :update, :destroy]
+  
   def index
     @decks=Deck.find_by(user_id: params[:id])
   end
@@ -13,28 +15,25 @@ class Api::V1::DecksController < ApplicationController
       @deck.save
       render json: {deck: DeckSerializer.new(@deck)}, status: :created
     else
-      render json: {error: 'Failed to create deck'}, status: :not_acceptable
+      render json: {errors: 'Failed to create deck'}, status: :not_acceptable
     end
   end
 
   def update
     @deck=Deck.find(params[:id])
     if @deck.update_attributes(deck_params)
-      render :json => {:response => 'Deck updated'}, :status => 201
-      return @deck
+      render json: {deck: DeckSerializer.new(@deck)}, status: :updated
     else
-      render :json => {:response => 'Unable to update deck'}, :status => 422
-      return params
+      render json: {errors: 'Failed to update deck'}, status: :not_acceptable
     end
   end
 
   def destroy
     @deck=Deck.find(params[:id])
     if @deck.destroy
-      render :json => {:response => 'Deck deleted'}, :status => 200
+      render json:{response: 'Deck deleted'}, status: :ok
     else
-      render :json => {:response => 'Unable to delete deck'}, :status => 422
-      return params
+      render json: {errors: 'Unable to delete deck'}, status: :not_acceptable
     end
   end
 

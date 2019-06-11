@@ -5,3 +5,4 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+User.new(username: 'tarvis', password: 'tarvis', avatar_img: 'https://cdn.drawception.com/images/panels/2017/6-24/dWqG1O57LE-8.png').save

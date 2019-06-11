@@ -1,4 +1,6 @@
-class Api::V1::UsersController < ApplicationController
+class UsersController < ApplicationController
+  before_action :authorize!, only: [:update, :destroy]
+
   def index
     @users=User.all
   end
@@ -13,28 +15,25 @@ class Api::V1::UsersController < ApplicationController
       @user.save
       render json: {user: UserSerializer.new(@user)}, status: :created
     else
-      render json: {error: 'Unable to create new user'}, status: :not_acceptable
+      render json: {errors: 'Unable to create new user'}, status: :not_acceptable
     end
   end
 
   def update
     @user=User.find(params[:id])
     if @user.update_attributes(user_params)
-      render :json => {:response => 'User updated'}, :status => 201
-      return @user
+      render json: {user: UserSerializer.new(@user)}, status: :updated
     else
-      render :json => {:response => 'Unable to update user'}, :status => 422
-      return params
+      render json: {errors: 'Unable to update user'}, status: :not_acceptable
     end
   end
 
   def destroy
     @user=User.find(params[:id])
     if @user.destory
-      render :json => {:response => 'User deleted'}, :status => 200
+      render json: {response: 'User deleted'}, status: :ok
     else
-      render :json => {:response => 'Unable to delete user'}, :status => 422
-      return params
+      render json: {errors: 'Unable to delete user'}, status: :not_acceptable
     end
   end
 
