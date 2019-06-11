@@ -1,4 +1,4 @@
-class DecksController < ApplicationController
+class Api::V1::DecksController < ApplicationController
   def index
     @decks=Deck.find_by(user_id: params[:id])
   end
@@ -8,14 +8,12 @@ class DecksController < ApplicationController
   end
 
   def create
-    @deck=Deck.new(deck_params)
+    @deck=Deck.create(deck_params)
     if @deck.valid?
       @deck.save
-      render :json => {:response => 'New deck created'}, :status => 201
-      return @deck
+      render json: {deck: DeckSerializer.new(@deck)}, status: :created
     else
-      render :json => {:response => 'Unable to create new deck'}, :status => 422
-      return params
+      render json: {error: 'Failed to create deck'}, status: :not_acceptable
     end
   end
 
