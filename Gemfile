@@ -51,3 +51,5 @@ gem "active_model_serializers", "~> 0.10.9"
 gem "faker", "~> 1.9"
 
 gem 'dotenv-rails'
+
+gem "httparty", "~> 0.17.0"

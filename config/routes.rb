@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show, :create, :update, :destroy]
   resources :decks, only: [:index, :show, :create, :update, :destroy]
   post '/login', to: 'sessions#create', as: 'login'
+  post '/search', to: 'searches#cards', as: 'search'
 end

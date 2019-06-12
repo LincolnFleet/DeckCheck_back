@@ -2,7 +2,7 @@ class DecksController < ApplicationController
   before_action :authorize!, only: [:create, :update, :destroy]
 
   def index
-    @decks=Deck.find_by(user_id: params[:id])
+    @decks=Deck.where(:user_id == params[:id])
   end
 
   def show
