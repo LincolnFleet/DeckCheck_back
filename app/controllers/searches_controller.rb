@@ -11,7 +11,8 @@ class SearchesController < ApplicationController
                 # puts 'Tossing cookie...'
                 # cards
             # else
-                render json: resp, status: :ok
+                array=resp.map{ |k,v| v}
+                render json: array, status: :ok
             # end
         else
             render json: {errors: 'Could not fetch cards from WotC server'}, status: :not_found
