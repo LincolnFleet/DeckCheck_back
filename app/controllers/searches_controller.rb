@@ -6,8 +6,13 @@ class SearchesController < ApplicationController
         url=API
         params.each {|k,v| url.concat(k+'='+v.to_s+';')}
         resp=HTTParty.get(url)
-        if response
-            render json: resp, status: :ok
+        if resp
+            # if resp.length>1
+                # puts 'Tossing cookie...'
+                # cards
+            # else
+                render json: resp, status: :ok
+            # end
         else
             render json: {errors: 'Could not fetch cards from WotC server'}, status: :not_found
         end
