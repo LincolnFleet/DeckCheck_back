@@ -8,7 +8,7 @@ class SearchesController < ApplicationController
         resp=HTTParty.get(url)
         if resp
             array=resp.map{ |k,v| v}
-            render json: array, status: :ok
+            render json: {cards:array, heads:resp.headers}, status: :ok
         else
             render json: {errors: 'Could not fetch cards from WotC server'}, status: :not_found
         end

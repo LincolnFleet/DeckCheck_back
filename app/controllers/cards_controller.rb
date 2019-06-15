@@ -9,7 +9,7 @@ class CardsController < ApplicationController
             @card.save
             render json: {user: CardSerializer.new(@card)}, status: :created
         else
-            render json: {errors: ['Unable to create new user']}, status: :not_acceptable
+            render json: {errors: ['Unable to save card']}, status: :not_acceptable
         end
     end
 

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorize!, only: [:update, :destroy]
+  before_action :authorize!, only:  [:update, :destroy]
 
   def index
     @users=User.all
@@ -11,10 +11,16 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user=User.create(user_params)
+    @user=User.new(user_params)
     if @user.valid?
       @user.save
-      render json: {user: UserSerializer.new(@user)}, status: :created
+      @newuser=User.find_by(username: user_params[:username])
+      if @newuser && @newuser.authenticate(params[:password])
+          auth_token=JWT.encode({user_id: @newuser.id}, ENV['TOKEN_SECRET'], 'HS256')
+          render json: {'AuthToken': auth_token}, status: :created
+      else
+          render json: {errors: ['Unable to authorize username/password']}, status: :unauthorized
+      end
     else
       render json: {errors: ['Unable to create new user']}, status: :not_acceptable
     end
@@ -41,6 +47,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :email, :password, :avatar_img, :user)
+    params.permit(:username, :email, :password, :avatar_img)
   end
 end
