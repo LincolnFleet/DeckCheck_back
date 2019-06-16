@@ -10,7 +10,7 @@ class DecksController < ApplicationController
   end
 
   def create
-    @deck=Deck.create(deck_params)
+    @deck=Deck.new(deck_params)
     if @deck.valid?
       @deck.save
       render json: {deck: DeckSerializer.new(@deck)}, status: :created
@@ -40,6 +40,8 @@ class DecksController < ApplicationController
   private
 
   def deck_params
-    params.require(:deck).permit(:user_id, :name, :card_count, :color)
+    plain_id=JWT.decode(params[:deck][:user_id], ENV['TOKEN_SECRET']).first['user_id'].to_s
+    params[:deck][:user_id]=plain_id
+    params.require(:deck).permit(:user_id, :name, :description, :color, :card_count)
   end
 end
