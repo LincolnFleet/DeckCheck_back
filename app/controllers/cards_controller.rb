@@ -1,7 +1,7 @@
 class CardsController < ApplicationController
     def index
         @cards=Card.where(:deck_id == request.headers['Deck-ID'])
-        render json: {cardList: @cards}, status: :ok
+        render json: {currentDeck: @cards}, status: :ok
     end
     
     def intakeList
@@ -23,7 +23,7 @@ class CardsController < ApplicationController
                 end
             end
         end
-        render json: {cards: Card.where(:deck_id == request.headers['deck_id']), errors:@errors}, status: :ok
+        render json: {cards: Card.where(:deck_id == request.headers['Deck-ID']), errors:@errors}, status: :ok
     end
 
     def create
@@ -67,7 +67,7 @@ class CardsController < ApplicationController
             :quantity,
             :colors,
             :colorIdentity,
-            :type,
+            :full_type,
             :supertypes,
             :types,
             :subtypes,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_17_202059) do
+ActiveRecord::Schema.define(version: 2019_06_17_220125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(version: 2019_06_17_202059) do
     t.integer "quantity"
     t.string "colors"
     t.string "colorIdentity"
-    t.string "type"
     t.string "supertypes"
     t.string "types"
     t.string "subtypes"
@@ -39,6 +38,7 @@ ActiveRecord::Schema.define(version: 2019_06_17_202059) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "deck_id"
+    t.string "full_type"
   end
 
   create_table "decks", force: :cascade do |t|
