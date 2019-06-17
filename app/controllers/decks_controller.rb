@@ -2,7 +2,8 @@ class DecksController < ApplicationController
   before_action :authorize!, only: [:create, :update, :destroy]
 
   def index
-    @decks=Deck.where(:user_id == params[:id])
+    @decks=Deck.where(:user_id == JWT.decode(request.headers['AuthToken'], ENV['TOKEN_SECRET']).first)
+    render json: {decks: @decks}, status: :ok
   end
 
   def show
@@ -40,7 +41,7 @@ class DecksController < ApplicationController
   private
 
   def deck_params
-    plain_id=JWT.decode(params[:deck][:user_id], ENV['TOKEN_SECRET']).first['user_id'].to_s
+    plain_id=JWT.decode(params[:deck][:user_id], ENV['TOKEN_SECRET']).first['user_id']
     params[:deck][:user_id]=plain_id
     params.require(:deck).permit(:user_id, :name, :description, :color, :card_count)
   end

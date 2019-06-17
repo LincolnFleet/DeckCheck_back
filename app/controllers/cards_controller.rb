@@ -1,6 +1,7 @@
 class CardsController < ApplicationController
     def index
-        @cards=Card.where(:deck_id == params[:deck_id])
+        @cards=Card.where(:deck_id == request.headers['Deck-ID'])
+        render json: {cardList: @cards}, status: :ok
     end
     
     def create
