@@ -4,8 +4,30 @@ class CardsController < ApplicationController
         render json: {cardList: @cards}, status: :ok
     end
     
+    def intakeList
+        @errors=[]
+        @list = params[:cards]
+        @list.each do |card|
+            if @oldCard=Card.find(card[:id])
+                if card.quantity < 1
+                    @oldCard.destroy
+                else
+                    @oldCard.update_attributes(card)
+                end
+            else
+                @newCard=Card.new(card)
+                if @newCard.valid?
+                    @newCard.save
+                else
+                    @errors.push(`Could not add #{card.name}`)
+                end
+            end
+        end
+        render json: {cards: Card.where(:deck_id == request.headers['deck_id']), errors:@errors}, status: :ok
+    end
+
     def create
-        @card=Card.create(card_params)
+        @card=Card.new(card_params)
         if @card.valid?
             @card.save
             render json: {user: CardSerializer.new(@card)}, status: :created
@@ -39,6 +61,28 @@ class CardsController < ApplicationController
     private
 
     def card_params
-        params
+        params.require(:card).permit(
+            :api_id,
+            :name,
+            :quantity,
+            :colors,
+            :colorIdentity,
+            :type,
+            :supertypes,
+            :types,
+            :subtypes,
+            :manaCost,
+            :cmc,
+            :rarity,
+            :set,
+            :loyalty,
+            :power,
+            :toughness,
+            :text,
+            :imageUrl,
+            :flavor,
+            :gameFormat,
+            :deck_id
+        )
     end
 end

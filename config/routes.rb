@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :cards, only: [:index, :show, :create, :update, :destory]
   post '/login', to: 'sessions#create_session', as: 'login'
   post '/search', to: 'searches#cards', as: 'search'
+  post '/submitDeck', to 'cards#intakeList', as: 'intakeList'
 end
