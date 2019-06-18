@@ -9,7 +9,7 @@ class CardsController < ApplicationController
         @list = params[:cards]
         @list.each do |card|
             if @oldCard=Card.find(card[:id])
-                if card.quantity < 1
+                if card[:quantity] < 1
                     @oldCard.destroy
                 else
                     @oldCard.update_attributes(card)
@@ -19,7 +19,7 @@ class CardsController < ApplicationController
                 if @newCard.valid?
                     @newCard.save
                 else
-                    @errors.push(`Could not add #{card.name}`)
+                    @errors.push(`Could not save #{card[:name]}`)
                 end
             end
         end
