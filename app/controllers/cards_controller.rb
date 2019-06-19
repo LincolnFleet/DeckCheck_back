@@ -8,14 +8,15 @@ class CardsController < ApplicationController
         @errors=[]
         @list = params[:cards]
         @list.each do |card|
-            if @oldCard=Card.find(card[:id])
+            if card['id']
+                @oldCard=Card.find(card['id'])
                 if card[:quantity] < 1
                     @oldCard.destroy
                 else
-                    @oldCard.update_attributes(card)
+                    @oldCard.update_attributes(clean_card(card))
                 end
             else
-                @newCard=Card.new(card)
+                @newCard=Card.new(clean_card(card))
                 if @newCard.valid?
                     @newCard.save
                 else
@@ -62,6 +63,32 @@ class CardsController < ApplicationController
 
     def card_params
         params.require(:card).permit(
+            :api_id,
+            :name,
+            :quantity,
+            :colors,
+            :colorIdentity,
+            :full_type,
+            :supertypes,
+            :types,
+            :subtypes,
+            :manaCost,
+            :cmc,
+            :rarity,
+            :set,
+            :loyalty,
+            :power,
+            :toughness,
+            :text,
+            :imageUrl,
+            :flavor,
+            :gameFormat,
+            :deck_id
+        )
+    end
+
+    def clean_card(obj)
+        obj.permit(
             :api_id,
             :name,
             :quantity,

@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 User.new(username: 'tarvis', password: 'tarvis', avatar_img: 'https://cdn.drawception.com/images/panels/2017/6-24/dWqG1O57LE-8.png').save
-Deck.new(user_id: 1, name: 'Nexus of FML', color: '{U}{G}{W}').save
+Deck.new(user_id: 1, name: 'Bant Nexus Control', color: '{U}{G}{W}', description: "Strategy: don't let your opponents play the game").save
 Card.new(
     cmc: 7,
     colorIdentity: ["U"],
@@ -24,5 +24,5 @@ Card.new(
     full_type: "Instant",
     types: ["Instant"],
     deck_id: 1,
-    quantity: 3
+    quantity: 4
 ).save

@@ -13,6 +13,7 @@ class ApplicationController < ActionController::API
     def authorize!
         unless current_user
             render json: {errors: ['You are not logged in']}, status: :unauthorized
+            return false
         end
     end
 end
