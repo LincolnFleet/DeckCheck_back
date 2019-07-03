@@ -1,6 +1,7 @@
 class CardsController < ApplicationController
     def index
-        @cards=Card.where(:deck_id == request.headers['Deck-ID'])
+        @cards=Card.where(deck_id: request.headers['Deck-ID'])
+        # @cards=Card.where(:deck_id == request.headers['Deck-ID'])
         render json: {currentDeck: @cards}, status: :ok
     end
     
@@ -10,7 +11,7 @@ class CardsController < ApplicationController
         @list.each do |card|
             if card['id']
                 @oldCard=Card.find(card['id'])
-                if card[:quantity] < 1
+                if card['quantity'] < 1
                     @oldCard.destroy
                 else
                     @oldCard.update_attributes(clean_card(card))
@@ -24,7 +25,8 @@ class CardsController < ApplicationController
                 end
             end
         end
-        render json: {cards: Card.where(:deck_id == request.headers['Deck-ID']), errors:@errors}, status: :ok
+        render json: {cards: Card.where(deck_id:request.headers['Deck-ID']), errors:@errors}, status: :ok
+        # render json: {cards: Card.where(:deck_id == request.headers['Deck-ID']), errors:@errors}, status: :ok
     end
 
     def create

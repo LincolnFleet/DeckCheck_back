@@ -4,8 +4,8 @@ class SearchesController < ApplicationController
 
     def cards
         url=API
-        params.each {|k,v| url.concat(k+'='+v.to_s+';')}
-        resp=HTTParty.get(url)
+        params.each {|k,v| API.concat(k+'='+v.to_s+';')}
+        resp=HTTParty.get(API)
         if resp
             array=resp.map{ |k,v| v}
             render json: {cards:array, heads:resp.headers}, status: :ok

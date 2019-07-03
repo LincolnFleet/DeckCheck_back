@@ -2,7 +2,8 @@ class DecksController < ApplicationController
   before_action :authorize!, only: [:create, :update, :destroy]
 
   def index
-    @decks=Deck.where(:user_id == JWT.decode(request.headers['AuthToken'], ENV['TOKEN_SECRET']).first)
+    @decks=Deck.where(user_id:JWT.decode(request.headers['AuthToken'], ENV['TOKEN_SECRET']).first)
+    # @decks=Deck.where(:user_id == JWT.decode(request.headers['AuthToken'], ENV['TOKEN_SECRET']).first)
     render json: {decks: @decks}, status: :ok
   end
 
