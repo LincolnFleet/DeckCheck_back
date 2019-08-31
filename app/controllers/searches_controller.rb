@@ -6,11 +6,12 @@ class SearchesController < ApplicationController
         url=API
         params.each {|k,v| API.concat(k+'='+v.to_s+';')}
         resp=HTTParty.get(API)
+        puts resp
         if resp
             array=resp.map{ |k,v| v}
             render json: {cards:array, heads:resp.headers}, status: :ok
         else
-            render json: {errors: 'Could not fetch cards from WotC server'}, status: :not_found
+            render json: {errors: 'No response from WotC server'}, status: :not_found
         end
     end
     
