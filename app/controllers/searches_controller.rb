@@ -6,7 +6,6 @@ class SearchesController < ApplicationController
         url=API
         params.each {|k,v| API.concat(k+'='+v.to_s+';')}
         resp=HTTParty.get(API)
-        puts resp
         if resp
             array=resp.map{ |k,v| v}
             render json: {cards:array, heads:resp.headers}, status: :ok
