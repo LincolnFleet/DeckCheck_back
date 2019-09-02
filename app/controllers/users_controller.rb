@@ -19,10 +19,10 @@ class UsersController < ApplicationController
           auth_token=JWT.encode({user_id: @newuser.id}, ENV['TOKEN_SECRET'], 'HS256')
           render json: {'AuthToken': auth_token}, status: :created
       else
-          render json: {errors: ['Unable to authorize username/password']}, status: :unauthorized
+          render json: {errors:['Unable to match username/password']}, status: :unauthorized
       end
     else
-      render json: {errors: ['Unable to create new user']}, status: :not_acceptable
+      render json: {errors:['Username is invalid or already taken. Please choose another.']}, status: :not_acceptable
     end
   end
 
@@ -31,7 +31,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(user_params)
       render json: {user: UserSerializer.new(@user)}, status: :updated
     else
-      render json: {errors: ['Unable to update user']}, status: :not_acceptable
+      render json: {errors:['Unable to update user']}, status: :not_acceptable
     end
   end
 
