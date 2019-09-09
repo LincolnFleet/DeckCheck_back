@@ -48,6 +48,6 @@ class DecksController < ApplicationController
   def deck_params
     plain_id=JWT.decode(params[:deck][:user_id], ENV['TOKEN_SECRET']).first['user_id']
     params[:deck][:user_id]=plain_id
-    params.require(:deck).permit(:user_id, :name, :description, :color, :card_count)
+    params.require(:deck).permit(:user_id, :name, :description, :color, :card_count, :gameFormat)
   end
 end
