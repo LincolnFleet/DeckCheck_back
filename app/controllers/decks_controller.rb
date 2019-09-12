@@ -30,17 +30,16 @@ class DecksController < ApplicationController
   end
 
   def destroy
-    if authorize!
-      @deck=Deck.find(params[:id])
-      @cards=Card.where(:deck_id == params[:id])
-      if @deck.destroy && @cards.destroy
-        render json:{response: ['Deck deleted']}, status: :ok
+    # if authorize!
+      @deck=Deck.find(params[:deck_id])
+      if @deck.destroy
+        render json: {response: ['Deck deleted']}, status: :ok
       else
         render json: {errors: ['Unable to delete deck']}, status: :not_acceptable
       end
-    else
-      render json: {errors: ["You must be signed in as this deck's owner to delete it"]}, status: :not_authorized
-    end
+    # else
+    #   render json: {errors: ["You must be signed in as this deck's owner to delete it"]}, status: :not_authorized
+    # end
   end
 
   private
