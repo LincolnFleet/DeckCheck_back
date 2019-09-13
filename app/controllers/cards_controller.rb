@@ -1,8 +1,9 @@
 class CardsController < ApplicationController
+
     def index
         @cards=Card.where(deck_id: request.headers['Deck-ID'])
         # @cards=Card.where(:deck_id == request.headers['Deck-ID'])
-        render json: {currentDeck: @cards}, status: :ok
+        render json: {cards: @cards}, status: :ok
     end
     
     def intakeList
