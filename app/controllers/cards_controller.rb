@@ -7,14 +7,14 @@ class CardsController < ApplicationController
     
     def intakeList
         @errors=[]
-        @list = params[:cards]
+        @list = card_params[:cards]
         @list.each do |card|
             if card['id']
-                @oldCard=Card.find(card['id'])
+                @existingCard=Card.find(card['id'])
                 if card['quantity'] < 1
-                    @oldCard.destroy
+                    @existingCard.destroy
                 else
-                    @oldCard.update_attributes(clean_card(card))
+                    @existingCard.update_attributes(clean_card(card))
                 end
             else
                 @newCard=Card.new(clean_card(card))
@@ -26,14 +26,13 @@ class CardsController < ApplicationController
             end
         end
         render json: {cards: Card.where(deck_id:request.headers['Deck-ID']), errors:@errors}, status: :ok
-        # render json: {cards: Card.where(:deck_id == request.headers['Deck-ID']), errors:@errors}, status: :ok
     end
 
     def create
         @card=Card.new(card_params)
         if @card.valid?
             @card.save
-            render json: {user: CardSerializer.new(@card)}, status: :created
+            render json: {card: CardSerializer.new(@card)}, status: :created
         else
             render json: {errors: ['Unable to save card']}, status: :not_acceptable
         end
@@ -42,7 +41,7 @@ class CardsController < ApplicationController
     def update
         @card=Card.find(params[:id])
         if @card.update_attributes(card_params)
-            render json: {user: CardSerializer.new(@card)}, status: :updated
+            render json: {card: CardSerializer.new(@card)}, status: :updated
         else
             render json: {errors: ['Unable to update user']}, status: :not_acceptable
         end
@@ -64,7 +63,8 @@ class CardsController < ApplicationController
     private
 
     def card_params
-        params.require(:card).permit(
+        params.permit(cards: [
+            :id,
             :api_id,
             :name,
             :quantity,
@@ -85,12 +85,15 @@ class CardsController < ApplicationController
             :imageUrl,
             :flavor,
             :gameFormat,
-            :deck_id
-        )
+            :deck_id,
+            :created_at,
+            :updated_at
+        ])
     end
 
     def clean_card(obj)
-        obj.permit(
+        obj.permit([
+            :id,
             :api_id,
             :name,
             :quantity,
@@ -111,7 +114,9 @@ class CardsController < ApplicationController
             :imageUrl,
             :flavor,
             :gameFormat,
-            :deck_id
-        )
+            :deck_id,
+            :created_at,
+            :updated_at
+        ])
     end
 end
