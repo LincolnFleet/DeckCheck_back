@@ -52,4 +52,4 @@ gem "faker", "~> 1.9"
 
 gem 'dotenv-rails'
 
-gem "httparty", "~> 0.17.0"
+gem "httparty", "~> 0.21.0"
